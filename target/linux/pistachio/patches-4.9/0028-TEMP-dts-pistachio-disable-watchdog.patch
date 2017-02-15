@@ -1,0 +1,27 @@
+From 4d0fc9e2680c10e0406d0d7f9f22268d02b84b43 Mon Sep 17 00:00:00 2001
+From: Ian Pozella <Ian.Pozella@imgtec.com>
+Date: Thu, 2 Mar 2017 14:40:24 +0000
+Subject: [PATCH 28/28] [TEMP] dts: pistachio: disable watchdog
+
+The HW watchdog is killing off debugging when breaking so disable it :D
+
+Signed-off-by: Ian Pozella <Ian.Pozella@imgtec.com>
+---
+ arch/mips/boot/dts/img/pistachio_marduk.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/mips/boot/dts/img/pistachio_marduk.dts b/arch/mips/boot/dts/img/pistachio_marduk.dts
+index ed92462..91b7a9e 100644
+--- a/arch/mips/boot/dts/img/pistachio_marduk.dts
++++ b/arch/mips/boot/dts/img/pistachio_marduk.dts
+@@ -174,3 +174,7 @@
+ 	status = "okay";
+ 	clock-frequency = <400000>;
+ };
++
++&wdt {
++	status = "disabled";
++};
+-- 
+2.7.4
+

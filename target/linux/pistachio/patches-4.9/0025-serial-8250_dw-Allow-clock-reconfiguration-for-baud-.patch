@@ -1,0 +1,34 @@
+From e34d1d0607279d1eb9f275ed009110d8513a6b92 Mon Sep 17 00:00:00 2001
+From: Govindraj Raja <Govindraj.Raja@imgtec.com>
+Date: Mon, 21 Sep 2015 11:36:42 +0100
+Subject: [PATCH 25/28] serial: 8250_dw: Allow clock reconfiguration for baud
+ change.
+
+Usage of standard termios function for baud change can change the
+UART baud, but if soc's needs clock rate change for associated baud
+clock then it is not taken care with default termios function.
+
+However the 8250_serial has a wrapper function which takes care
+of this issue, so use the wrapper termios function to set the
+clock rate before configuring controller for baud change.
+
+Signed-off-by: Govindraj Raja <Govindraj.Raja@imgtec.com>
+---
+ drivers/tty/serial/8250/8250_dw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 459d726..2ad8a63 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -443,6 +443,7 @@ static int dw8250_probe(struct platform_device *pdev)
+ 		data->msr_mask_off |= UART_MSR_TERI;
+ 	}
+ 
++	p->set_termios = dw8250_set_termios;
+ 	/* Always ask for fixed clock rate from a property. */
+ 	device_property_read_u32(dev, "clock-frequency", &p->uartclk);
+ 
+-- 
+2.7.4
+

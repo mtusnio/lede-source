@@ -1,0 +1,40 @@
+From 8412c72cba367c96e1adcfb16e31c38d7c6e7e08 Mon Sep 17 00:00:00 2001
+From: Ian Pozella <Ian.Pozella@imgtec.com>
+Date: Tue, 28 Feb 2017 11:00:07 +0000
+Subject: [PATCH 21/28] mtd: spi-nand: drop use of_mtd.h
+
+of_get_nand_on_flash_bbt is defined in of_mtd.h but it no longer
+exists so we can't use it. Instead directly read the property by
+name.
+
+Signed-off-by: Ian Pozella <Ian.Pozella@imgtec.com>
+---
+ drivers/mtd/spi-nand/spi-nand-base.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/mtd/spi-nand/spi-nand-base.c b/drivers/mtd/spi-nand/spi-nand-base.c
+index 3c357e7..ca311a9 100644
+--- a/drivers/mtd/spi-nand/spi-nand-base.c
++++ b/drivers/mtd/spi-nand/spi-nand-base.c
+@@ -21,8 +21,7 @@
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/partitions.h>
+ #include <linux/mtd/spi-nand.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_mtd.h>
++#include <linux/of.h>
+ #include <linux/slab.h>
+ 
+ /* Registers common to all devices */
+@@ -489,7 +488,7 @@ int spi_nand_register(struct spi_nand *snand, struct nand_flash_dev *flash_ids)
+ 	chip->ecc.write_page	= spi_nand_write_page_hwecc;
+ 	chip->ecc.mode		= NAND_ECC_HW;
+ 
+-	if (of_get_nand_on_flash_bbt(np))
++	if (of_property_read_bool(np, "nand-on-flash-bbt"))
+ 		chip->bbt_options |= NAND_BBT_USE_FLASH | NAND_BBT_NO_OOB;
+ 
+ #ifdef CONFIG_MTD_OF_PARTS
+-- 
+2.7.4
+
