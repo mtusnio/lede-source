@@ -1,3 +1,7 @@
+=====================================================================
+This branch is for reference only, it will be force pushed regularly.
+=====================================================================
+
 This is the buildsystem for the LEDE Linux distribution.
 
 Please use "make menuconfig" to choose your preferred
